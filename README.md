@@ -41,7 +41,7 @@ Metadata extracted for each text include:
 
 
 #### 1.3.	Annotation scheme
-The corpus has been compiled in vertical format as required by SketchEngine and NoSketchEngine. The corpus has been annotated with XML tags at corpus, text and sentence level (s. below). At the token level, it has been annotated with Part-of-Speech tags and lemmas. The complete POS tagset is available on spacy.io. 
+The corpus has been compiled in vertical format as required by SketchEngine and NoSketchEngine. The corpus has been annotated with XML tags at corpus, text and sentence level (s. below). At the token level, it has been annotated with Part-of-Speech tags and lemmas. The complete POS tagset is available on [spacy.io](https://spacy.io/api/annotation#pos-de). 
 
 ```
 <corpus>
@@ -78,7 +78,7 @@ Text contained in different tags has been newline-separated, making the followin
 Boilerplate lines have been filtered out by means of regular expressions.
 
 #### 2.4.	Sentence splitting
-After scraping and cleaning, the subcorpora have been sentence splitted. In particular, only lines containing two or more period characters have undergone sentence splitting. I used Kahn’s and Schroeder’s sentence-splitter  adding a list of non-breaking prefixes with legal abbreviations taken from the corpus and from online sources. After splitting, lines have been added opening and closing sentence delimiting tags (`<s>`).
+After scraping and cleaning, the subcorpora have been sentence splitted. In particular, only lines containing two or more period characters have undergone sentence splitting. I used [Kahn’s and Schroeder’s sentence-splitter](https://github.com/mediacloud/sentence-splitter) adding a list of non-breaking prefixes with legal abbreviations taken from the corpus and from online sources. After splitting, lines have been added opening and closing sentence delimiting tags (`<s>`).
 
 #### 2.5.	POS tagging and lemmatization
 The corpus has been tagged with Part-of-Speech tags and lemmas. This was carried out using the SpaCy model.  The output has not undergone any extensive revision or correction; therefore, the corpus may contain minor sentence splitting or tagging errors.
