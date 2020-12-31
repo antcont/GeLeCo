@@ -41,7 +41,8 @@ blacklist = ["zum Seitenanfang\n", "Datenschutz\n", "Barrierefreiheitserklärung
              "Gesetze im Internet\n", "Verwaltungsvorschriften im Internet\n", "N-Lex\n", "Entscheidungssuche\n",
              "Suche\n", "Erweiterte Suche\n", "Tipps und Tricks\n", "Suchbegriffe\n", "Suche in\n",
              "Liste der auswählbaren Gerichte.\n", "Trefferliste\n", "Dokument\n", "XML\n", "PDF\n", "Kurztext\n",
-             "Langtext\n", "Anlagen (nichtamtliches Verzeichnis)\n"]
+             "Langtext\n", "Anlagen (nichtamtliches Verzeichnis)\n",
+             "Rechtsprechung im Internet  - Entscheidungssuche\n"]
 
 tagged_corpus = []
 with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
