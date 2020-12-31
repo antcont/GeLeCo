@@ -56,6 +56,9 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
             title = escape(unescape(title))
             if "\n" in title:
                 title = "NA"        # to avoid newlines that would mess the XML tag; this happens when the court decision has no defined title and the first part of the decision is caught by the script as "title"
+            match = re.match(r"\d[A-ZÖÄÜ]", title)  # if decision title begins with "1D" (es "1Der Kläger..."), set as NA
+            if match:
+                title = "NA"
         else:
             title = "NA"
 
