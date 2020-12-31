@@ -74,8 +74,8 @@ All URLs were collected by means of website-specific web scrapers written on Pyt
 Based on the previously collected URL lists, single legal texts were scraped with custom web scrapers written in Python. Text and metadata collection was carried out using the BeautifulSoup library. 
 Text contained in different tags has been newline-separated, making the following sentence splitting stage easier and faster to carry out. After scraping, texts have been merged and a first raw corpus version has been exported as a single .txt file for each subcorpus.
 
-#### 2.3.	Boilerplate cleaning
-Boilerplate lines have been filtered out by means of regular expressions.
+#### 2.3.	Boilerplate cleaning, deduplication, text filtering
+Boilerplate lines have been eliminated by means of regular expressions. Texts extracted from not correctly visualized webpages (not containing any law, regulation or court decision) have been discarded. Texts have also been deduplicated based on metadata equivalence.
 
 #### 2.4.	Sentence splitting
 After scraping and cleaning, the subcorpora have been sentence splitted. In particular, only lines containing two or more period characters have undergone sentence splitting. I used [Kahn’s and Schroeder’s sentence-splitter](https://github.com/mediacloud/sentence-splitter) adding a list of non-breaking prefixes with legal abbreviations taken from the corpus and from online sources. After splitting, lines have been added opening and closing sentence delimiting tags (`<s>`).
