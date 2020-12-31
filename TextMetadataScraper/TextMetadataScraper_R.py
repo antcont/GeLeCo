@@ -128,13 +128,20 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
 
         # building the <text> tag
         text_tag = '<text type="%s" level="%s" title="%s" title_abbreviation="%s" drafting_date="%s" decade="%s" database_URL="%s" court="%s" court_detail="%s" reference="%s" year="%s" decision_type="%s" ECLI="%s">' % (type, level, title, title_abbreviation, drafting_date, decade, database_URL, court, court_detail, reference, year, decision_type, ECLI)
-        corpus_as_list.append(text_tag)
 
         #scraping and adding the text body
         body = soup.get_text('\n', strip=True)
-        corpus_as_list.append(body)
 
-        #adding the </text> closing tag
+        #checking whether scraper has correctly navigated to the right URL or webpage does not contain a court decision
+        #ex. https://www.rechtsprechung-im-internet.de/jportal/portal/t/5h/page/bsjrsprod.psml/js_peid/Trefferliste/media-type/html?action=portlets.jw.ResultListFormAction&tl=true&IGNORE=true&currentNavigationPosition=1&numberofresults=15000&sortmethod=date&sortiern=OK&eventSubmit_doSkipforward=1&forcemax=0001
+        no_decision = "Das Bundesministerium der Justiz und für Verbraucherschutz und das Bundesamt für Justiz stellen für interessierte Bürgerinnen und Bürger ausgewählte Entscheidungen des Bundesverfassungsgerichts, der obersten Gerichtshöfe des Bundes sowie des Bundespatentgerichts ab dem Jahr 2010 kostenlos im Internet bereit."
+        if no_decision in body:
+            #discarding, exiting current loop and scraping next URL
+            continue
+
+        #adding <text> tag, body and closing tag
+        corpus_as_list.append(text_tag)
+        corpus_as_list.append(body)
         corpus_as_list.append("</text>")
 
         # printing progress
@@ -145,7 +152,7 @@ corpus_as_string = "\n".join(corpus_as_list)
 with open(path_output, "w+", encoding="utf-8") as file:
     file.write(corpus_as_string)
 
-print("\rDone.")
+print("Done.")
 
 
 
