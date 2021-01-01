@@ -7,10 +7,10 @@
 
 | text type |	database URL | text count	| token count |
 | :--------- | :--------- | :---------: | :---------: |
-|laws |	gesetze-im-internet.de |	6586	| 22,626,473 |
-|court decisions |	rechtsprechung-im-internet.de |	57945	| 168,441,219 |
-|administrative regulations |	verwaltungsvorschriften-im-internet.de |	813	| 3,519,344 |
-|total count |  |	**65,344** |	**194,587,036** |
+|laws |	gesetze-im-internet.de |	6,577	| 22,502,937 |
+|court decisions |	rechtsprechung-im-internet.de |	55,361	| 167,210,730 |
+|administrative regulations |	verwaltungsvorschriften-im-internet.de |	787	| 3,469,166 |
+|total count |  |	**62,725** |	**193,182,833** |
 
 
 #### 1.2.	Metadata
