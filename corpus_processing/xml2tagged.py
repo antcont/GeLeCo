@@ -43,7 +43,7 @@ with open(path_input, 'r+', encoding='utf-8') as file:
 
 tree.write(path_output, encoding="utf-8")
 
-print(counter)
+print("Tokens written: ", counter)
 print("Done")
 
 
