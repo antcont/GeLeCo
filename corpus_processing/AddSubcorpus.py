@@ -7,6 +7,7 @@ from lxml import etree
 import gc
 gc.set_threshold(1000, 15, 15)      # setting higher thresholds for garbage collection, in order to avoid memory peaks
 
+#setting filepaths
 master_corpus = r""
 subcorpus = r""
 master_corpus_out = r""

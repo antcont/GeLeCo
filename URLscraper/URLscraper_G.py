@@ -45,13 +45,15 @@ for x in lista_pagine_alfab:
         url_clean_law = url_domain + clean
         URL_laws.append(url_clean_law)
 
+print(URL_laws)
+
 '''for each URL, navigate to the URL and get the URL to the full "HTML" version of the law'''
 lista_URL_html = []
 counter = 0
 for x in URL_laws:
     parts = x.split('/')
-    parts.pop()
-    url_part = "/".join(parts)
+    parts.pop()                                 #removing final part of URL "/index.html"
+    url_part = "/".join(parts)                  #merging URL after removing "/index.html"
     r = http.request('GET', x)
     html = r.data
     soup = BeautifulSoup(html, features="lxml")
@@ -61,7 +63,7 @@ for x in URL_laws:
     href = a.get('href')
     if href is None:
         continue
-    url_clean_html = url_part + "/" + href
+    url_clean_html = url_part + "/" + href      #adding local href to build the final URL
     lista_URL_html.append(url_clean_html)
     counter += 1
     print("\r", "%i out of 6550 URLs scraped (%.2f%%)" % (counter, (counter/6550*100)), end="")

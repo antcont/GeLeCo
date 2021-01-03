@@ -1,6 +1,6 @@
 '''
-A script for the cleaning and final verticalization of the corpus.
-The output .vert file has the following vertical structure:
+A script for the cleaning and final verticalization of the corpus as a word-per-line (WPL) file.
+The output .vert file has the following structure:
 
 <corpus>
 <text type="Gerichtsentscheidung" level="Bund" title="GmbH: Beschränkung der Stimmrechtsausübungsfreiheit eines

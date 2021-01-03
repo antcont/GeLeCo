@@ -27,7 +27,6 @@ starting_page_1900to2020 = "https://www.rechtsprechung-im-internet.de/jportal/po
 def click_next():
     '''clicking on "weiter" (next page) button'''
     driver.find_element_by_xpath('//*[@title="weiter"]').click()
-    print("clicked")
     time.sleep(0.5)
 
 lista_URLs = []
@@ -38,7 +37,6 @@ for i in range(700): #database only shows 15.000 results for each query, divided
     elements = driver.find_elements_by_css_selector("[title*='Treffer Langtext']")
     for element in elements:
         lista_URLs.append(element.get_attribute("href"))
-        print(element.get_attribute("href"))
     txt = "\n".join(lista_URLs)
     with open(path_output, "w", encoding="utf-8") as file:
         file.write(txt)

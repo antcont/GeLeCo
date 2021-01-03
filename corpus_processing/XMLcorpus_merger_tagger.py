@@ -14,12 +14,14 @@ merged_corpus = ["<corpus>"]
 with open(subcorpus1, "r", encoding="utf-8") as file:
     lines = file.readlines()
 for line in lines:
-    merged_corpus.append(line)
+    if line != "\n":
+        merged_corpus.append(line)
 
 with open(subcorpus2, "r", encoding="utf-8") as file:
     lines = file.readlines()
 for line in lines:
-    merged_corpus.append(line)
+    if line != "\n":
+        merged_corpus.append(line)
 
 with open(subcorpus3, "r", encoding="utf-8") as file:
     lines = file.readlines()
