@@ -13,9 +13,9 @@ The GeLeCo corpus is a large German Legal Corpus for research, teaching and tran
 |laws |	gesetze-im-internet.de |	6,577	| 22,502,937 |
 |court decisions |	rechtsprechung-im-internet.de |	55,361	| 167,210,730 |
 |administrative regulations |	verwaltungsvorschriften-im-internet.de |	787	| 3,469,166 |
-|total count |  |	**62,725** |	**193,182,833** |
+|**total count** |  |	**62,725** |	**193,182,833** |
 
-The largest subcorpus (the corpus of court decisions published on rechtsprechung-im-internet.de) has the following composition: 
+The largest subcorpus (the corpus of court decisions published on `www.rechtsprechung-im-internet.de`) has the following composition: 
 | issuing court | text count | % |
 | :------- | :------: | :------: |
 | Bundesarbeitsgericht (BAG) | 5,697 | 10,3% |
