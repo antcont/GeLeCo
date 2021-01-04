@@ -1,9 +1,12 @@
-# GeLeCo
-## A large German Legal Corpus of laws, administrative regulations and court decisions published in Germany until 2020.
+# GeLeCo: A large German Legal Corpus of laws, administrative regulations and court decisions published in Germany until 2020.
 
+## Documentation
 
-### 1.	Corpus design
-#### 1.1.	Composition
+### 1.  Introduction
+The GeLeCo corpus is a large German Legal Corpus for research, teaching and translation purposes. It includes the complete collection of federal laws, administrative regulations and court decisions which have been published on three online databases by the German Federal Ministry of Justice and Consumer Protection and the Federal Office of Justice (`www.gesetze-im-internet.de`, `www.verwaltungsvorschriften-im-internet.de`, `www.rechtsprechung-im-internet.de`).
+
+### 2.	Corpus design
+#### 2.1.	Composition
 
 | text type |	database URL | text count	| token count |
 | :--------- | :--------- | :---------: | :---------: |
@@ -12,36 +15,22 @@
 |administrative regulations |	verwaltungsvorschriften-im-internet.de |	787	| 3,469,166 |
 |total count |  |	**62,725** |	**193,182,833** |
 
-
-#### 1.2.	Metadata
-Metadata extracted for each text include:
--	_title_
--	_title_abbreviation_
--	_type_: can take one of the following values:
-    - _Gesetz_ (law)
-    -	_Gerichtsentscheidung_ (court decision) 
-    -	_Verwaltungsvorschrift_ (administrative regulation)
--	_level_: indicates whether it is a law/regulation at a national or regional level, or whether the court decision was taken by a national or regional court. Even though this corpus contains only national-level laws, regulations and decisions, this metadate has been included with sight to a possible extension of the corpus to regional legal texts. It can take the following values:
-    -	_Bund_: national level
-    -	_Land_: regional level (not present in this corpus)
--	_drafting_date_: this corresponds to the Ausfertigungsdatum of laws and the Entscheidungsdatum of court decisions.
--	_year_
--	_decade_
--	_database_URL_: can take the following values:
-    -	_gesetze-im-internet.de_
-    -	_rechtsprechung-im-internet.de_
-    -	_verwaltungsvorschriften-im-internet.de_
--	_court_
--	_court_detail_
--	_reference_: a reference code for court decisions (Aktenzeichen)
--	_decision_type_: the type of document for court decisions (Dokumenttyp) 
--	_ECLI_: the European Case Law Identifier code for court decisions.
+The largest subcorpus (the corpus of court decisions published on rechtsprechung-im-internet.de) has the following composition: 
+| issuing court | text count | % |
+| :------- | :------: | :------: |
+| Bundesarbeitsgericht (BAG) | 5,697 | 10,3% |
+| Bundesfinanzhof (BFH) | 8,964 | 16,2% |
+| Bundesgerichtshof (BGH) | 19,069 | 34,4% |
+| Bundespatentgericht (BPatG) | 5,913 | 10,7% |
+| Bundessozialgericht (BSG) | 4,460 | 8,1 % |
+| Bundesverfassungsgericht (BVerfG) | 3,878 | 7,0% |
+| Bundesverwaltungsgericht (BVerwG) | 7,189 | 13,9% |
+| NA | 191 | 0,3% |
+| **total** | **55,361** | **100,0%** |
 
 
-
-
-#### 1.3.	Annotation scheme
-The corpus has been compiled in vertical format as required by SketchEngine and NoSketchEngine. The corpus has been annotated with XML tags at corpus, text and sentence level (s. below). At the token level, it has been annotated with Part-of-Speech tags and lemmas. The complete POS tagset is available on [spacy.io](https://spacy.io/api/annotation#pos-de). 
+#### 2.2.	Annotation scheme
+The corpus has been compiled in vertical or word-per-line (WPL) format as required by SketchEngine and NoSketchEngine. It has been marked-up with contextual (metadata), structural (text and sentence boundaries) and linguistic (POS tagging, lemmatisation) annotation (s. below). The complete POS tagset is available on [spacy.io](https://spacy.io/api/annotation#pos-de). 
 
 ```
 <corpus>
@@ -66,21 +55,41 @@ anerkannt	VERB	anerkennen
 ```
 
 
-### 2.	Corpus building steps
-2.1.	URL collection
-All URLs were collected by means of website-specific web scrapers written on Python. Three lists of URLs were exported in newline-separated .txt files for subsequent text scraping.
+#### 2.3.	Metadata
+Contextual information marked-up for each text includes:
+-	`title`
+-	`title_abbreviation`
+-	`type`: can take one of the following values: _Gesetz_ (law), _Gerichtsentscheidung_ (court decision), _Verwaltungsvorschrift_ (administrative regulation)
+-	`level`: indicates whether the law, regulation or court decision was published at federal or _Länder_ level. This metadate has been included with sight to a possible extension of the corpus to laws, regulations and court decisions published at _Länder_ level. It can take the following values: 
+    -	_Bund_: federal level
+    -	_Land_: _Länder_ level (not present in this corpus)
+-	`drafting_date`: this corresponds to the _Ausfertigungsdatum_ of laws and the _Entscheidungsdatum_ of court decisions.
+-	`year`
+-	`decade`
+-	`database_URL`: can take the following values: _gesetze-im-internet.de_, _rechtsprechung-im-internet.de_, _verwaltungsvorschriften-im-internet.de_
+-	`court`
+-	`court_detail`
+-	`reference`: a reference code for court decisions (Aktenzeichen)
+-	`decision_type`: the type of document for court decisions (Dokumenttyp) 
+-	`ECLI`: the European Case Law Identifier code for court decisions.
 
-#### 2.2.	Text scraping and XML tagging
-Based on the previously collected URL lists, single legal texts were scraped with custom web scrapers written in Python. Text and metadata collection was carried out using the BeautifulSoup library. 
-Text contained in different tags has been newline-separated, making the following sentence splitting stage easier and faster to carry out. After scraping, texts have been merged and a first raw corpus version has been exported as a single .txt file for each subcorpus.
 
-#### 2.3.	Boilerplate cleaning, deduplication, text filtering
+### 3.	Corpus building steps
+##### 3.1.	URL collection
+All URLs were collected by means of website-specific web scrapers written in Python. Three lists of URLs were exported in newline-separated .txt files for subsequent text scraping.
+
+#### 3.2.	Text scraping and XML tagging
+Based on the previously collected URL lists, single legal texts were scraped by means of custom web scrapers written in Python. Text and metadata collection was carried out using the BeautifulSoup Python library. Text contained in different HTML tags has been newline-separated, making the subsequent sentence splitting stage easier and faster to carry out. After scraping, texts have been merged and a first raw corpus version has been exported as a single .txt file for each subcorpus.
+
+#### 3.3.	Boilerplate cleaning, deduplication, text filtering
 Boilerplate lines have been eliminated by means of regular expressions. Texts extracted from not correctly visualized webpages (not containing any law, regulation or court decision) have been discarded. Texts have also been deduplicated based on metadata equivalence.
 
-#### 2.4.	Sentence splitting
+#### 3.4.	Sentence splitting
 After scraping and cleaning, the subcorpora have been sentence splitted. In particular, only lines containing two or more period characters have undergone sentence splitting. I used [Kahn’s and Schroeder’s sentence-splitter](https://github.com/mediacloud/sentence-splitter) adding a list of non-breaking prefixes with legal abbreviations taken from the corpus and from online sources. After splitting, lines have been added opening and closing sentence delimiting tags (`<s>`).
 
-#### 2.5.	POS tagging and lemmatization
-The corpus has been tagged with Part-of-Speech tags and lemmas. This was carried out using the SpaCy model.  The output has not undergone any extensive revision or correction; therefore, the corpus may contain minor sentence splitting or tagging errors.
+#### 3.5.	POS tagging and lemmatization
+The corpus has been tagged with Part-of-Speech tags and lemmas. This was carried out using the SpaCy tagger.  The output has not undergone any systematic revision or correction stage; therefore, the corpus may contain minor sentence splitting or annotation errors.
 
-
+### 4.  Possible uses of the corpus and further development
+The GeLeCo corpus can be used for several purposes: research in the field of diachronic or synchronic, monolingual or comparative legal corpus linguistics or discourse analysis, translator training and translation practice, legal lexicography and terminography, as well as Natural Language Processing (NLP) applications.
+Potential future development includes the extension of the corpus by scraping other publicly available databases containing laws, court decisions and/or administrative regulations issued at _Länder_ level. Each _Land_ has its own databases whose texts can be easily scraped by means of customized Python scripts; the extended corpus could potentially reach a huge size of several hundreds of millions of tokens.
