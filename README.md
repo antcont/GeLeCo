@@ -69,8 +69,8 @@ Contextual information marked-up for each text includes:
 -	`database_URL`: can take the following values: _gesetze-im-internet.de_, _rechtsprechung-im-internet.de_, _verwaltungsvorschriften-im-internet.de_
 -	`court`
 -	`court_detail`
--	`reference`: a reference code for court decisions (Aktenzeichen)
--	`decision_type`: the type of document for court decisions (Dokumenttyp) 
+-	`reference`: a reference code for court decisions (_Aktenzeichen_)
+-	`decision_type`: the type of document for court decisions (_Dokumenttyp_) 
 -	`ECLI`: the European Case Law Identifier code for court decisions.
 
 
