@@ -51,7 +51,7 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
         #getting title
         title_find = soup.find(class_="RspDL")
         if title_find:
-            title = title_find.get_text()
+            title = title_find.get_text(strip=True)
             title = title.replace('"', "'")  # substituting double quotes with single quotes to avoid XML parsing errors
             title = escape(unescape(title))
             if "\n" in title:
@@ -63,7 +63,7 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
             title = "NA"
 
         #getting drafting date
-        drafting_date_match = re.search(r"Entscheidungsdatum:(.{8,10})", soup.get_text())
+        drafting_date_match = re.search(r"Entscheidungsdatum:(.{8,10})", soup.get_text(strip=True))
         if drafting_date_match:
             drafting_date = drafting_date_match.group(1)
         else:
@@ -85,7 +85,7 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
         # getting court detail
         court_detail_match = soup.find(string="Gericht:")
         if court_detail_match:
-            court_detail = court_detail_match.next_element.get_text()
+            court_detail = court_detail_match.next_element.get_text(strip=True)
             if "\n" in court_detail or len(court_detail) > 30:
                 court_detail = "NA"
         else:
@@ -104,14 +104,14 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
         # getting reference
         reference_match = soup.find(string="Aktenzeichen:")
         if reference_match:
-            reference = reference_match.next_element.get_text()
+            reference = reference_match.next_element.get_text(strip=True)
         else:
             reference = "NA"
 
         #getting ECLI
         ECLI_match = soup.find(string="ECLI:")
         if ECLI_match:
-            ECLI = ECLI_match.next_element.get_text()
+            ECLI = ECLI_match.next_element.get_text(strip=True)
             if "\n" in ECLI:
                 ECLI = "NA"
         else:
@@ -120,7 +120,7 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
         #getting decision_type (Dokumenttyp)
         decisiontype_match = soup.find(string="Dokumenttyp:")
         if decisiontype_match:
-            decision_type = decisiontype_match.next_element.get_text()
+            decision_type = decisiontype_match.next_element.get_text(strip=True)
             if "\n" in decision_type:
                 decision_type = "NA"
         else:

@@ -50,9 +50,9 @@ with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
         ECLI = "NA"
 
         # getting title and abbreviation (if any)
-        titlex = soup.find("title").get_text()
+        titlex = soup.find("title").get_text(strip=True)
         # abbreviation can be found at the end of the title, between parentheses, sometimes followed by the drafting date
-        title_match = re.search(r"^(.+)\((.+)\)( (vom|v\.) (\d\d?\.\d\d?\.\d\d\d\d|\d\d?\. \w{3,10} \d\d\d\d))? ?$", titlex)
+        title_match = re.search(r"^(.+) ?\((.+)\)( (vom|v\.) (\d\d?\.\d\d?\.\d\d\d\d|\d\d?\. \w{3,10} \d\d\d\d))? ?$", titlex)
         if title_match: # matching titles with final parenthesis containing the abbreviation
             title = title_match.group(1)
             title_abbreviation = title_match.group(2)
@@ -64,7 +64,7 @@ with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
         title = title.replace('"', "'")  # substituting double quotes with single quotes to avoid XML parsing errors
         title = escape(unescape(title))
 
-        #getting drafting_date from the title. unfortunately, there is no other specific are where the drafting_date is to be found coherently
+        #getting drafting_date from the title. unfortunately, there is no other specific section where the drafting_date is to be found coherently
         match_date = re.search(r"^.+(vom|v\.) (\d\d?\.\d\d?\.\d\d\d\d|\d\d?\. \w{3,10} \d\d\d\d) ?(\(.+\))?$", titlex)
         if match_date:
             drafting_date = match_date.group(2)

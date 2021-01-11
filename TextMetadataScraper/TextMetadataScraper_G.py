@@ -53,7 +53,7 @@ with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
         ECLI = "NA"
 
         # getting title
-        title = soup.find(class_="jnlangue").get_text()
+        title = soup.find(class_="jnlangue").get_text(strip=True)
         if "\n" in title:
             title = "NA"
         else:
