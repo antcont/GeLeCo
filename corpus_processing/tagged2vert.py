@@ -29,7 +29,7 @@ import re
 import gc
 from yaspin import yaspin
 
-gc.set_threshold(1000, 15, 15)      # setting higher tresholds for garbage collection, in order to avoid memory peaks
+gc.set_threshold(1000, 15, 15)      # setting higher thresholds for garbage collection, in order to avoid memory peaks
 
 #set input and output filepaths
 fileXML = r""
