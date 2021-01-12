@@ -28,6 +28,8 @@ anerkannt	VERB	anerkennen
 import re
 import gc
 from yaspin import yaspin
+from xml.sax.saxutils import unescape
+
 
 gc.set_threshold(1000, 15, 15)      # setting higher thresholds for garbage collection, in order to avoid memory peaks
 
@@ -41,7 +43,7 @@ regex_list = [                              #create a list of regex to clean up 
     (r'(<s>)', r'\1\r\n'),
     (r'.+\tSPACE\t.+$', r''),               #remove lines with tagged spaces
     (r'(\r\n|\r\r\n)', r'\n')
-]    
+]
 
 with open(fileXML, 'r+', encoding='utf-8') as file:
     corpus = file.readlines()
@@ -53,6 +55,8 @@ with open(fileXML, 'r+', encoding='utf-8') as file:
             for line in corpus:
                 for to_find, to_replace in regex_list:
                     line = re.sub(to_find, to_replace, line)    # apply all regexes to the string
+                #if not line.startswith("<"):   #unescaping
+                    #line = unescape(line)
                 if line != "\n":                                # ignore empty lines
                     corpus_vert.write(line)
                     lines_counter += 1
