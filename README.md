@@ -56,7 +56,7 @@ anerkannt	VERB	anerkennen
 
 
 #### 2.3.	Metadata
-Contextual information marked-up for each text includes:
+Contextual information annotated for each text includes:
 -	`title`
 -	`title_abbreviation`
 -	`type`: can take one of the following values: _Gesetz_ (law), _Gerichtsentscheidung_ (court decision), _Verwaltungsvorschrift_ (administrative regulation)
