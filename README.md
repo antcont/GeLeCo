@@ -75,7 +75,7 @@ Contextual information annotated for each text includes:
 
 
 ### 3.	Corpus building steps
-##### 3.1.	URL collection
+#### 3.1.	URL collection
 All URLs were collected by means of website-specific web scrapers written in Python. Three lists of URLs were exported in newline-separated .txt files for subsequent text scraping.
 
 #### 3.2.	Text scraping and XML tagging
