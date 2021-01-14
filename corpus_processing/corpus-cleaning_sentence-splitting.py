@@ -48,7 +48,7 @@ tagged_corpus = []
 with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
     for id, line in enumerate(lines):
         if any(line == x for x in blacklist) or re.search(r"^Zurück zur Teilliste .+$", line):
-            # ignoring boilerplate lines
+            # discarding boilerplate lines
             continue
         elif line == "</text>\n" or line.startswith("<text"):
             tagged_corpus.append(line.rstrip("\n"))

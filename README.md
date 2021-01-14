@@ -3,7 +3,7 @@
 ## Documentation
 
 ### 1.  Introduction
-The GeLeCo corpus is a large German Legal Corpus for research, teaching and translation purposes. It includes the complete collection of federal laws, administrative regulations and court decisions which were published on three online databases by the German Federal Ministry of Justice and Consumer Protection and the Federal Office of Justice (`www.gesetze-im-internet.de`, `www.verwaltungsvorschriften-im-internet.de`, `www.rechtsprechung-im-internet.de`). The corpus is publicly accessible on the website of the Department of Interpreting and Translation of the University of Bologna, Forlì campus ([corpora.dipintra.it](https://corpora.dipintra.it/public/run.cgi/first_form?corpname=geleco;align=)).
+GeLeCo is a large German Legal Corpus for research, teaching and translation purposes. It includes the complete collection of federal laws, administrative regulations and court decisions published on three online databases by the German Federal Ministry of Justice and Consumer Protection and the Federal Office of Justice (`www.gesetze-im-internet.de`, `www.verwaltungsvorschriften-im-internet.de`, `www.rechtsprechung-im-internet.de`). The corpus is publicly accessible on the website of the Department of Interpreting and Translation of the University of Bologna, Forlì campus ([corpora.dipintra.it](https://corpora.dipintra.it/public/run.cgi/first_form?corpname=geleco;align=)).
 
 ### 2.	Corpus design
 #### 2.1.	Composition

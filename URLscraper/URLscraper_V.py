@@ -14,7 +14,7 @@ url_domain = "http://www.verwaltungsvorschriften-im-internet.de/"
 retries = Retry(connect=5, read=2, redirect=5)
 http = urllib3.PoolManager(retries=retries)
 
-''' getting URLs to each subdirectory, in class_="headline" '''
+''' getting URLs to each subdirectory, in the id="container" section'''
 html = http.request('GET', "http://www.verwaltungsvorschriften-im-internet.de/erlassstellen.html").data
 soup = BeautifulSoup(html, features="lxml")
 list_subdirectories = []
@@ -37,7 +37,7 @@ for x in list_subdirectories:
         if href:
             match = re.match(r"\./(.+\.htm)", href)
             if match is None:
-                print(href)
+                #print(href)
                 continue
             clean = match.group(1)
             url_clean_law = url_domain + clean

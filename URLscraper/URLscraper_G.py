@@ -16,8 +16,7 @@ url_domain = "https://www.gesetze-im-internet.de/"
 path_output = r""
 
 '''laws are organized alphabetically: colleting URLs for each letter's subdirectory'''
-r = http.request('GET', "https://www.gesetze-im-internet.de/aktuell.html")
-html = r.data
+html = http.request('GET', "https://www.gesetze-im-internet.de/aktuell.html").data
 soup = BeautifulSoup(html, features="lxml")
 lista_pagine_alfab = []
 section = soup.find(id="container")
@@ -32,8 +31,7 @@ for link in section.find_all("a"):
 '''collecting proper list of law URLs'''
 URL_laws = []
 for x in lista_pagine_alfab:
-    r = http.request('GET', x)
-    html = r.data
+    html = http.request('GET', x).data
     soup = BeautifulSoup(html, features="lxml")
     section = soup.find(id="container")
     for link in section.find_all("a"):
@@ -45,7 +43,6 @@ for x in lista_pagine_alfab:
         url_clean_law = url_domain + clean
         URL_laws.append(url_clean_law)
 
-print(URL_laws)
 
 '''for each URL, navigate to the URL and get the URL to the full "HTML" version of the law'''
 lista_URL_html = []
@@ -54,8 +51,7 @@ for x in URL_laws:
     parts = x.split('/')
     parts.pop()                                 #removing final part of URL "/index.html"
     url_part = "/".join(parts)                  #merging URL after removing "/index.html"
-    r = http.request('GET', x)
-    html = r.data
+    html = http.request('GET', x).data
     soup = BeautifulSoup(html, features="lxml")
     section = soup.find(id="container")
     a_string = section.find(string="HTML")

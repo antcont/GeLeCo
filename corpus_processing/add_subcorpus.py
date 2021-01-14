@@ -1,5 +1,5 @@
 '''
-A script for adding a new (sentence-splitted, POS-tagged and lemmatized) subcorpus to the master corpus.
+A script for adding a new (sentence-splitted, POS-tagged and lemmatized, xml) subcorpus to the master corpus.
 A re-run of tagged2vert.py is necessary after adding the new subcorpus.
 '''
 
