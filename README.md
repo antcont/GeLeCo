@@ -1,4 +1,5 @@
-# GeLeCo: A large German Legal Corpus of laws, administrative regulations and court decisions issued in Germany at federal level
+# GeLeCo
+# A large German Legal Corpus of laws, administrative regulations and court decisions issued in Germany at federal level
 
 ## Documentation
 
