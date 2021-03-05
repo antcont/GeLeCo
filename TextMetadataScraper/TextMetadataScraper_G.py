@@ -37,6 +37,9 @@ len_list = len(mylist)
 
 corpus_as_list = []
 
+#rimuovere
+counter = 0
+
 with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
     for id, url in enumerate(mylist):
         html = http.request('GET', url).data
@@ -57,8 +60,8 @@ with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
         if "\n" in title:
             title = "NA"
         else:
-            title = title.replace('"', "'") #substituting double quotes with single quotes to avoid XML parsing errors
             title = escape(unescape(title))
+            title = title.replace("\"", "&quot;")
 
         #getting drafting_date
         drafting_date_match = soup.find(string=re.compile(r"Ausfertigungsdatum"))
@@ -69,8 +72,8 @@ with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
         previous = drafting_date_match.previous_element
         title_abbreviation = previous.previous_element
         if title_abbreviation:
-            title_abbreviation = title_abbreviation.replace('"', "'")
             title_abbreviation = escape(unescape(title_abbreviation))
+            title_abbreviation = title_abbreviation.replace("\"", "&quot;")
         else:
             title_abbreviation = "NA"
 
@@ -81,6 +84,10 @@ with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
         else:
             decade = drafting_date[6:9] + "0"
             year = drafting_date[6:10]
+
+        #remove this after having scraped
+        if year == "2021":
+            continue
 
         # building the <text> tag
         text_tag = '<text type="%s" level="%s" title="%s" title_abbreviation="%s" drafting_date="%s" decade="%s" database_URL="%s" court="%s" court_detail="%s" reference="%s" year="%s" decision_type="%s" ECLI="%s">' % (type, level, title, title_abbreviation, drafting_date, decade, database_URL, court, court_detail, reference, year, decision_type, ECLI)
@@ -96,6 +103,8 @@ with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
         corpus_as_list.append("</text>")
 
         sp.text = "   %i out of %i (%.2f%%)" % (id, len_list, (id/len_list*100))
+
+        counter += 1
 
 corpus_as_string = "\n".join(corpus_as_list)
 

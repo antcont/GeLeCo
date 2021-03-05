@@ -43,40 +43,42 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
         soup = BeautifulSoup(html, features="lxml")
 
         # getting/setting metadata
-        type = "Gerichtsentscheidung"          #these must be changed for each subcorpus
+        type = "Gerichtsentscheidung"
         level = "Bund"
         database_URL = "rechtsprechung-im-internet.de"
         title_abbreviation = "NA"
 
-        #getting title
+        # getting title
         title_find = soup.find(class_="RspDL")
         if title_find:
             title = title_find.get_text(strip=True)
-            title = title.replace('"', "'")  # substituting double quotes with single quotes to avoid XML parsing errors
             title = escape(unescape(title))
+            title = title.replace("\"", "&quot;")
             if "\n" in title:
-                title = "NA"        # to avoid newlines that would mess the XML tag; this happens when the court decision has no defined title and the first part of the decision is caught by the script as "title"
-            match = re.match(r"\d[A-ZÖÄÜ]", title)  # if decision title begins with "1D" (es "1Der Kläger..."), set as NA
+                # to avoid newlines that would mess the XML tag; this happens when the court decision has no defined
+                # title and the first sentence of the decision is caught by the script as "title"
+                title = "NA"
+            match = re.match(r"\d[A-ZÖÄÜ]", title) # if decision title begins with "1D" (es "1Der Kläger..."), set as NA
             if match:
                 title = "NA"
         else:
             title = "NA"
 
-        #getting drafting date
+        # getting drafting date
         drafting_date_match = re.search(r"Entscheidungsdatum:(.{8,10})", soup.get_text(strip=True))
         if drafting_date_match:
             drafting_date = drafting_date_match.group(1)
         else:
             drafting_date = "NA"
 
-        #getting year
+        # getting year
         year_match = re.search(r".+ ?(\d{4}$)", drafting_date)
         if year_match:
             year = year_match.group(1)
         else:
             year = "NA"
 
-        #getting decade by slicing 7t to 9th character of drafting date and adding 0
+        # getting decade by slicing 7t to 9th character of drafting date and adding 0
         if drafting_date == "NA":
             decade = "NA"
         else:
@@ -91,7 +93,7 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
         else:
             court_detail = "NA"
 
-        #getting court from court detail
+        # getting court from court detail
         if court_detail == "NA":
             court = "NA"
         else:
@@ -108,7 +110,7 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
         else:
             reference = "NA"
 
-        #getting ECLI
+        # getting ECLI
         ECLI_match = soup.find(string="ECLI:")
         if ECLI_match:
             ECLI = ECLI_match.next_element.get_text(strip=True)
@@ -117,7 +119,7 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
         else:
             ECLI = "NA"
 
-        #getting decision_type (Dokumenttyp)
+        # getting decision_type (Dokumenttyp)
         decisiontype_match = soup.find(string="Dokumenttyp:")
         if decisiontype_match:
             decision_type = decisiontype_match.next_element.get_text(strip=True)
@@ -127,19 +129,26 @@ with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
             decision_type = "NA"
 
         # building the <text> tag
-        text_tag = '<text type="%s" level="%s" title="%s" title_abbreviation="%s" drafting_date="%s" decade="%s" database_URL="%s" court="%s" court_detail="%s" reference="%s" year="%s" decision_type="%s" ECLI="%s">' % (type, level, title, title_abbreviation, drafting_date, decade, database_URL, court, court_detail, reference, year, decision_type, ECLI)
+        text_tag = '<text type="%s" level="%s" title="%s" title_abbreviation="%s" drafting_date="%s" decade="%s"' \
+                   ' database_URL="%s" court="%s" court_detail="%s" reference="%s" year="%s" decision_type="%s"' \
+                   ' ECLI="%s">' \
+                   % (type, level, title, title_abbreviation, drafting_date, decade, database_URL, court,
+                      court_detail, reference, year, decision_type, ECLI)
 
-        #scraping and adding the text body
+        # scraping and adding the text body
         body = soup.get_text('\n', strip=True)
 
-        #checking whether scraper has correctly navigated to the right URL or webpage does not contain a court decision
-        #ex. https://www.rechtsprechung-im-internet.de/jportal/portal/t/5h/page/bsjrsprod.psml/js_peid/Trefferliste/media-type/html?action=portlets.jw.ResultListFormAction&tl=true&IGNORE=true&currentNavigationPosition=1&numberofresults=15000&sortmethod=date&sortiern=OK&eventSubmit_doSkipforward=1&forcemax=0001
-        no_decision = "Das Bundesministerium der Justiz und für Verbraucherschutz und das Bundesamt für Justiz stellen für interessierte Bürgerinnen und Bürger ausgewählte Entscheidungen des Bundesverfassungsgerichts, der obersten Gerichtshöfe des Bundes sowie des Bundespatentgerichts ab dem Jahr 2010 kostenlos im Internet bereit."
+        # checking whether scraper has correctly navigated to the right URL or webpage does not contain any decision
+        no_decision = "Das Bundesministerium der Justiz und für Verbraucherschutz und das Bundesamt für Justiz " \
+                      "stellen für interessierte Bürgerinnen und Bürger ausgewählte Entscheidungen des" \
+                      " Bundesverfassungsgerichts, der obersten Gerichtshöfe des Bundes sowie des" \
+                      " Bundespatentgerichts ab dem Jahr 2010 kostenlos im Internet bereit."
         if no_decision in body:
-            #discarding, exiting current loop and scraping next URL
+            # discarding, exiting current loop and scraping next URL
             continue
 
-        #adding <text> tag, body and closing tag
+
+        # adding <text> tag, body and closing tag
         corpus_as_list.append(text_tag)
         corpus_as_list.append(body)
         corpus_as_list.append("</text>")

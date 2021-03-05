@@ -23,7 +23,8 @@ with open(path_input, "r+", encoding="utf-8") as corp:
     dedupl = [dict(s) for s in unique_sets]
 
     # this list is the deduplicated list of attributes against which each text will be compared
-    dedupl.append({"just": "because", "this": "way", "it's": "never", "empty": "!!"}) # this is done in order for the list to not be empty for the last iterations
+    dedupl.append({"just": "because", "this": "way", "it's": "never", "empty": "!!"}) # this is done in order for
+                                                                    # the list to not be empty for the last iterations
     print("List of dictionaries of attributes collected")
 
     # removing duplicates by comparing attributes (metadata)

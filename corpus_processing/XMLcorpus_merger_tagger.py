@@ -26,7 +26,7 @@ for line in lines:
 with open(subcorpus3, "r", encoding="utf-8") as file:
     lines = file.readlines()
 for line in lines:
-    if line != "\n":
+    if line != "\n" or line != "\r\n":
         merged_corpus.append(line)
 
 merged_corpus.append("</corpus>")

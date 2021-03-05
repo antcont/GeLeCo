@@ -56,13 +56,14 @@ with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
         if title_match: # matching titles with final parenthesis containing the abbreviation
             title = title_match.group(1)
             title_abbreviation = title_match.group(2)
-            title_abbreviation = title_abbreviation.replace('"', "'")
             title_abbreviation = escape(unescape(title_abbreviation))
+            title_abbreviation = title_abbreviation.replace("\"", "&quot;")
         else: #if title has not a final parenthesis with the abbreviation
             title = titlex
             title_abbreviation = "NA"
-        title = title.replace('"', "'")  # substituting double quotes with single quotes to avoid XML parsing errors
         title = escape(unescape(title))
+        title = title.replace("\"", "&quot;")
+
 
         #getting drafting_date from the title. unfortunately, there is no other specific section where the drafting_date is to be found coherently
         match_date = re.search(r"^.+(vom|v\.) (\d\d?\.\d\d?\.\d\d\d\d|\d\d?\. \w{3,10} \d\d\d\d) ?(\(.+\))?$", titlex)

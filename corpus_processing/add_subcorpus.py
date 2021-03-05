@@ -1,6 +1,7 @@
 '''
-A script for adding a new (sentence-splitted, POS-tagged and lemmatized, xml) subcorpus to the master corpus.
-A re-run of tagged2vert.py is necessary after adding the new subcorpus.
+A script for adding a new (sentence-splitted, POS-tagged and lemmatized, xml) subcorpus to the master corpus
+(add to the escaped xml version of the corpus).
+A re-run of tagged2vert.py and unescape_s.py is necessary after adding the new subcorpus.
 '''
 
 from lxml import etree

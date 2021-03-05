@@ -1,10 +1,10 @@
 '''
-A script for implementing tokenization, POS tagging and lemmatization using SpaCy.
+Tokenization, POS tagging and lemmatization using SpaCy.
 
-The input file is the merged, sentence splitted and tagged .xml corpus.
-The output file is tokenized, lemmatized and POS tagged, but still not properly verticalized (the parser eliminates
-newlines between tags). The output is verticalized separately (for RAM reasons) by means of regular expressions
-(tagged2vert.py)
+Input: sentence splitted XML corpus.
+Output: tokenized, POS tagged and lemmatized corpus (still not properly vertical, use tagged2vert.py).
+
+SpaCy's .pos_ adds UPOS coarse-grained tags (use .tag for fine-grained POS tagging)
 '''
 
 from lxml import etree
@@ -30,14 +30,17 @@ with open(path_input, 'r+', encoding='utf-8') as file:
         counter = 0
         for element in tree.iter():                             # iterate over each tag element
             if element.text is not None:
-                doc = nlp(element.text, disable=['parser', 'ner']) # parse the text with SpaCy, without syntactic parsing and NER
+                doc = nlp(element.text, disable=['parser', 'ner']) # parse the text with SpaCy
                 segm = list()                                   # create a list for the single <s> segments
                 for w in doc:                                   # iterate over each word in the segment
                     if w.text != '\n' and w.text != '\r' and w.text != '\r\n':  # ignore newline characters
-                        segm.append(f"""{w.text}\t{w.pos_}\t{w.lemma_}""")  #building tab-separated line for vert file (token-POS-lemma)
+                        # building tab-separated line for vert file (token-POS-lemma)
+                        # (use w.tag for fine-grained POS tagging)
+                        segm.append(f"""{w.text}\t{w.pos_}\t{w.lemma_}""")
                         counter += 1
                         if (counter/1000).is_integer():
-                            sp.text = "%i out of approx 200358000 tokens tagged (%.2f%%)" % (counter, counter/200358000*100)
+                            sp.text = "%i out of approx 200358000 tokens tagged (%.2f%%)"\
+                                      % (counter, counter/200358000*100)
 
                 element.text = "\n".join(segm)
 

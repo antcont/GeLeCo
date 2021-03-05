@@ -20,6 +20,9 @@ database_URL="rechtsprechung-im-internet.de" court="BGH" court_detail="BGH 2. Zi
 </s>
 </text>
 
+
+(!) Takes very long when a large list of non-breaking prefixes is provided (> 5000).
+Reduce the size of that list, if necessary, or use another sentence splitter.
 '''
 
 from xml.sax.saxutils import escape, unescape
@@ -47,14 +50,17 @@ blacklist = ["zum Seitenanfang\n", "Datenschutz\n", "Barrierefreiheitserklärung
 tagged_corpus = []
 with yaspin().bold.cyan.aesthetic as sp:  # printing spinner and % progress
     for id, line in enumerate(lines):
-        if any(line == x for x in blacklist) or re.search(r"^Zurück zur Teilliste .+$", line):
+        if line == "\n" or line == "\r\n":
+            continue
+        elif any(line == x for x in blacklist) or re.search(r"^Zurück zur Teilliste .+$", line):
             # discarding boilerplate lines
             continue
-        elif line == "</text>\n" or line.startswith("<text"):
+        elif line.startswith(('<text', '<corpus', '</corpus', '</text')):
             tagged_corpus.append(line.rstrip("\n"))
         # if line contains two or more period characters, we apply a sentence splitter
         elif line.count('.') >= 2:
-            sentences = split_text_into_sentences(line, language="de", non_breaking_prefix_file="non-breaking-prefixes-german.txt")
+            sentences = split_text_into_sentences(line, language="de",
+                                                  non_breaking_prefix_file="non-breaking-prefixes-german.txt")
             for sentence in sentences:
                 tagged_corpus.append("<s>" + escape(unescape(sentence.rstrip("\n"))) + "</s>")
         else:
