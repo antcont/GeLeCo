@@ -55,9 +55,10 @@ with open(fileXML, 'r+', encoding='utf-8') as file:
             for line in corpus:
                 for to_find, to_replace in regex_list:
                     line = re.sub(to_find, to_replace, line)    # apply all regexes to the string
-                #if not line.startswith("<"):   #unescaping
-                    #line = unescape(line)
-                if line != "\n":                                # ignore empty lines
+                if not line.startswith("<"):   #unescaping
+                    line = unescape(line)
+                    line = line.replace("&quot;", "\"")
+                if line != "\n" and line != "\r\n":            # ignore empty lines
                     corpus_vert.write(line)
                     lines_counter += 1
                     if (lines_counter/10000).is_integer():       # refresh counter each 10000 tokens
