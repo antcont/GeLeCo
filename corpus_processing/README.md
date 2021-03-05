@@ -6,4 +6,3 @@
 - `xml2tagged.py`: annotates linguistic mark-up (POS tagging, lemmatisation), either with SpaCy or TreeTagger
 - `tagged2vert.py`: creates the final corpus in word-per-line (WPL) vertical format
 - `add_subcorpus.py`: adds a new subcorpus to the master corpus
-- `unescape_s.py`: unescapes xml special characters in the final .vert corpus
