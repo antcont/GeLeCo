@@ -1,6 +1,8 @@
 '''
 Tokenization, POS tagging and lemmatization using the TreeTagger.
 
+TreeTagger needs to be installed.
+
 Input: sentence splitted XML corpus.
 Output: tokenized, POS tagged and lemmatized corpus (still not properly vertical, use tagged2vert.py).
 '''
