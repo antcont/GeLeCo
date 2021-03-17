@@ -18,8 +18,6 @@ from bs4 import BeautifulSoup
 from urllib3.util import Retry
 import urllib3
 import re
-from yaspin import yaspin
-from yaspin.spinners import Spinners
 from xml.sax.saxutils import escape, unescape
 
 
@@ -37,81 +35,70 @@ len_list = len(mylist)
 
 corpus_as_list = []
 
-#rimuovere
-counter = 0
+for id, url in enumerate(mylist):
+    html = http.request('GET', url).data
+    soup = BeautifulSoup(html, features="lxml")
 
-with yaspin(Spinners.aesthetic) as sp:  # printing spinner and % progress
-    for id, url in enumerate(mylist):
-        html = http.request('GET', url).data
-        soup = BeautifulSoup(html, features="lxml")
+    # getting/setting metadata
+    type = "Gesetz"
+    level = "Bund"
+    database_URL = "gesetze-im-internet.de"
+    court = "NA"
+    court_detail = "NA"
+    reference = "NA"         # court, court_detail and reference (Aktenzeichen) are metadata of court decisions only
+    decision_type = "NA"
+    ECLI = "NA"
 
-        # getting/setting metadata
-        type = "Gesetz"
-        level = "Bund"
-        database_URL = "gesetze-im-internet.de"
-        court = "NA"
-        court_detail = "NA"
-        reference = "NA"         # court, court_detail and reference (Aktenzeichen) are metadata of court decisions only
-        decision_type = "NA"
-        ECLI = "NA"
+    # getting title
+    try:
+        title = soup.find(class_="jnlangue").get_text(strip=True)
+    except:
+        continue
+    if "\n" in title:
+        title = "NA"
+    else:
+        title = escape(unescape(title))
+        title = title.replace("\"", "&quot;")
 
-        # getting title
-        try:
-            title = soup.find(class_="jnlangue").get_text(strip=True)
-        except:
-            continue
-        if "\n" in title:
-            title = "NA"
-        else:
-            title = escape(unescape(title))
-            title = title.replace("\"", "&quot;")
+    #getting drafting_date
+    drafting_date_match = soup.find(string=re.compile(r"Ausfertigungsdatum"))
+    drafting_date_reg = re.search(r"Ausfertigungsdatum: (.{10})", drafting_date_match)
+    drafting_date = drafting_date_reg.group(1)
 
-        #getting drafting_date
-        drafting_date_match = soup.find(string=re.compile(r"Ausfertigungsdatum"))
-        drafting_date_reg = re.search(r"Ausfertigungsdatum: (.{10})", drafting_date_match)
-        drafting_date = drafting_date_reg.group(1)
+    #getting title abbreviation
+    previous = drafting_date_match.previous_element
+    title_abbreviation = previous.previous_element
+    if title_abbreviation:
+        title_abbreviation = escape(unescape(title_abbreviation))
+        title_abbreviation = title_abbreviation.replace("\"", "&quot;")
+    else:
+        title_abbreviation = "NA"
 
-        #getting title abbreviation
-        previous = drafting_date_match.previous_element
-        title_abbreviation = previous.previous_element
-        if title_abbreviation:
-            title_abbreviation = escape(unescape(title_abbreviation))
-            title_abbreviation = title_abbreviation.replace("\"", "&quot;")
-        else:
-            title_abbreviation = "NA"
+    #getting year and decade by slicing 7t to 9th character of drafting date and adding 0
+    if drafting_date == "NA":
+        decade = "NA"
+        year = "NA"
+    else:
+        decade = drafting_date[6:9] + "0"
+        year = drafting_date[6:10]
 
-        #getting year and decade by slicing 7t to 9th character of drafting date and adding 0
-        if drafting_date == "NA":
-            decade = "NA"
-            year = "NA"
-        else:
-            decade = drafting_date[6:9] + "0"
-            year = drafting_date[6:10]
+    # building the <text> tag
+    text_tag = '<text type="%s" level="%s" title="%s" title_abbreviation="%s" drafting_date="%s" decade="%s" database_URL="%s" court="%s" court_detail="%s" reference="%s" year="%s" decision_type="%s" ECLI="%s">' % (type, level, title, title_abbreviation, drafting_date, decade, database_URL, court, court_detail, reference, year, decision_type, ECLI)
 
-        #remove this after having scraped
-        if year == "2021":
-            continue
+    #adding the <text> tag before the text
+    corpus_as_list.append(text_tag)
 
-        # building the <text> tag
-        text_tag = '<text type="%s" level="%s" title="%s" title_abbreviation="%s" drafting_date="%s" decade="%s" database_URL="%s" court="%s" court_detail="%s" reference="%s" year="%s" decision_type="%s" ECLI="%s">' % (type, level, title, title_abbreviation, drafting_date, decade, database_URL, court, court_detail, reference, year, decision_type, ECLI)
+    #scraping and adding the text body
+    body = soup.get_text('\n', strip=True)
+    corpus_as_list.append(body)
 
-        #adding the <text> tag before the text
-        corpus_as_list.append(text_tag)
+    #adding the </text> closing tag
+    corpus_as_list.append("</text>")
 
-        #scraping and adding the text body
-        body = soup.get_text('\n', strip=True)
-        corpus_as_list.append(body)
-
-        #adding the </text> closing tag
-        corpus_as_list.append("</text>")
-
-        sp.text = "   %i out of %i (%.2f%%)" % (id, len_list, (id/len_list*100))
-
-        counter += 1
-
-corpus_as_string = "\n".join(corpus_as_list)
+    # printing progress
+    print("\r", "%i out of %i (%.2f%%)" % (id, len_list, (id/len_list*100)), end="")
 
 with open(path_output, "w+", encoding="utf-8") as file:
-    file.write(corpus_as_string)
+    file.write("\n".join(corpus_as_list))
 
 print("\rDone")
