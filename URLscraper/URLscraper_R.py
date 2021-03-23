@@ -3,20 +3,19 @@ A web scraper to collect all URLs from rechtsprechung-im-internet.de.
 Here, a "spider" is needed to navigate the database properly and get all URLs.
 Could need a re-run and a creation of several URL lists to be merged at the end
 (due to result visualization limit of the database).
+
+Insert location of your Firefox driver
 '''
 
 import urllib3
-from bs4 import BeautifulSoup
-import re
 from urllib3.util import Retry
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 import time
 
-driver = webdriver.Firefox(executable_path=r"C:\Users\anton\Downloads\geckodriver-v0.28.0-win64\geckodriver.exe")
+# insert location of your Firefox (or other browser's) driver below
+driver = webdriver.Firefox(executable_path=r"\geckodriver-v0.28.0-win64\geckodriver.exe")
+
+
 retries = Retry(connect=10, read=5, redirect=10)
 http = urllib3.PoolManager(retries=retries)
 
