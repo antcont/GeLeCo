@@ -14,6 +14,7 @@ ECLI="ECLI:DE:BGH:2016:230616B4STR75.16.0">
 
 The output is one single .txt file of all texts, each with a <text> tag and metadata.
 '''
+import argparse
 from bs4 import BeautifulSoup
 from urllib3.util import Retry
 import urllib3
@@ -24,22 +25,28 @@ from xml.sax.saxutils import escape, unescape
 retries = Retry(connect=15, read=10, redirect=15)
 http = urllib3.PoolManager(retries=retries)
 
-'''setting filepaths of input and output files'''
-path_input = r""
-path_output = r""
 
-with open(path_input, "r") as f:
+#  define cmd arguments
+parser = argparse.ArgumentParser(description="A web scraper of texts and metadata from"
+                                             " gesetze-im-internet.de.")
+parser.add_argument("urlList", help="a .txt file of newline-separated URLs to be scraped")
+args = parser.parse_args()
+
+#  processing arguments
+urlList = args.urlList
+
+
+with open(urlList, "r") as f:
     mylist = f.read().splitlines()
 
 len_list = len(mylist)
-
 corpus_as_list = []
 
 for id, url in enumerate(mylist):
     html = http.request('GET', url).data
     soup = BeautifulSoup(html, features="lxml")
 
-    # getting/setting metadata
+    #  getting/setting metadata
     type = "Gesetz"
     level = "Bund"
     database_URL = "gesetze-im-internet.de"
@@ -49,7 +56,7 @@ for id, url in enumerate(mylist):
     decision_type = "NA"
     ECLI = "NA"
 
-    # getting title
+    #  getting title
     try:
         title = soup.find(class_="jnlangue").get_text(strip=True)
     except:
@@ -60,12 +67,12 @@ for id, url in enumerate(mylist):
         title = escape(unescape(title))
         title = title.replace("\"", "&quot;")
 
-    #getting drafting_date
+    #  getting drafting_date
     drafting_date_match = soup.find(string=re.compile(r"Ausfertigungsdatum"))
     drafting_date_reg = re.search(r"Ausfertigungsdatum: (.{10})", drafting_date_match)
     drafting_date = drafting_date_reg.group(1)
 
-    #getting title abbreviation
+    #  getting title abbreviation
     previous = drafting_date_match.previous_element
     title_abbreviation = previous.previous_element
     if title_abbreviation:
@@ -74,7 +81,7 @@ for id, url in enumerate(mylist):
     else:
         title_abbreviation = "NA"
 
-    #getting year and decade by slicing 7t to 9th character of drafting date and adding 0
+    #  getting year and decade by slicing 7t to 9th character of drafting date and adding 0
     if drafting_date == "NA":
         decade = "NA"
         year = "NA"
@@ -82,23 +89,25 @@ for id, url in enumerate(mylist):
         decade = drafting_date[6:9] + "0"
         year = drafting_date[6:10]
 
-    # building the <text> tag
+    #  building the <text> tag
     text_tag = '<text type="%s" level="%s" title="%s" title_abbreviation="%s" drafting_date="%s" decade="%s" database_URL="%s" court="%s" court_detail="%s" reference="%s" year="%s" decision_type="%s" ECLI="%s">' % (type, level, title, title_abbreviation, drafting_date, decade, database_URL, court, court_detail, reference, year, decision_type, ECLI)
 
-    #adding the <text> tag before the text
+    #  adding the <text> tag before the text
     corpus_as_list.append(text_tag)
 
-    #scraping and adding the text body
+    #  scraping and adding the text body
     body = soup.get_text('\n', strip=True)
     corpus_as_list.append(body)
 
-    #adding the </text> closing tag
+    #  adding the </text> closing tag
     corpus_as_list.append("</text>")
 
-    # printing progress
+    #  printing progress
     print("\r", "%i out of %i (%.2f%%)" % (id, len_list, (id/len_list*100)), end="")
 
-with open(path_output, "w+", encoding="utf-8") as file:
+
+#  writing the corpus as a single txt file
+with open("corpus_G.txt", "w+", encoding="utf-8") as file:
     file.write("\n".join(corpus_as_list))
 
 print("\rDone")

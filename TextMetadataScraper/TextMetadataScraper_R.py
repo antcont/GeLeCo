@@ -14,21 +14,27 @@ ECLI="ECLI:DE:BGH:2016:230616B4STR75.16.0">
 
 The output is one single .txt file of all texts, each with a <text> tag and metadata.
 '''
+import argparse
 from bs4 import BeautifulSoup
 from urllib3.util import Retry
 import urllib3
 import re
 from xml.sax.saxutils import escape, unescape
 
-
 retries = Retry(connect=15, read=10, redirect=15)
 http = urllib3.PoolManager(retries=retries)
 
-'''setting filepaths of input and output files'''
-path_input = r""
-path_output = r""
 
-with open(path_input, "r") as f:
+#  define cmd arguments
+parser = argparse.ArgumentParser(description="A web scraper of texts and metadata from"
+                                             " rechtsprechung-im-internet.de.")
+parser.add_argument("urlList", help="a .txt file of newline-separated URLs to be scraped")
+args = parser.parse_args()
+
+#  processing arguments
+urlList = args.urlList
+
+with open(urlList, "r") as f:
     mylist = f.read().splitlines()
 
 len_list = len(mylist)
@@ -38,13 +44,13 @@ for id, url in enumerate(mylist):
     html = http.request('GET', url).data
     soup = BeautifulSoup(html, features="lxml")
 
-    # getting/setting metadata
+    #  getting/setting metadata
     type = "Gerichtsentscheidung"
     level = "Bund"
     database_URL = "rechtsprechung-im-internet.de"
     title_abbreviation = "NA"
 
-    # getting title
+    #  getting title
     title_find = soup.find(class_="RspDL")
     if title_find:
         title = title_find.get_text(strip=True)
@@ -60,27 +66,27 @@ for id, url in enumerate(mylist):
     else:
         title = "NA"
 
-    # getting drafting date
+    #  getting drafting date
     drafting_date_match = re.search(r"Entscheidungsdatum:(.{8,10})", soup.get_text(strip=True))
     if drafting_date_match:
         drafting_date = drafting_date_match.group(1)
     else:
         drafting_date = "NA"
 
-    # getting year
+    #  getting year
     year_match = re.search(r".+ ?(\d{4}$)", drafting_date)
     if year_match:
         year = year_match.group(1)
     else:
         year = "NA"
 
-    # getting decade by slicing 7t to 9th character of drafting date and adding 0
+    #  getting decade by slicing 7t to 9th character of drafting date and adding 0
     if drafting_date == "NA":
         decade = "NA"
     else:
         decade = drafting_date[6:9] + "0"
 
-    # getting court detail
+    #  getting court detail
     court_detail_match = soup.find(string="Gericht:")
     if court_detail_match:
         court_detail = court_detail_match.next_element.get_text(strip=True)
@@ -89,7 +95,7 @@ for id, url in enumerate(mylist):
     else:
         court_detail = "NA"
 
-    # getting court from court detail
+    #  getting court from court detail
     if court_detail == "NA":
         court = "NA"
     else:
@@ -99,14 +105,14 @@ for id, url in enumerate(mylist):
         else:
             court = "NA"
 
-    # getting reference
+    #  getting reference
     reference_match = soup.find(string="Aktenzeichen:")
     if reference_match:
         reference = reference_match.next_element.get_text(strip=True)
     else:
         reference = "NA"
 
-    # getting ECLI
+    #  getting ECLI
     ECLI_match = soup.find(string="ECLI:")
     if ECLI_match:
         ECLI = ECLI_match.next_element.get_text(strip=True)
@@ -115,7 +121,7 @@ for id, url in enumerate(mylist):
     else:
         ECLI = "NA"
 
-    # getting decision_type (Dokumenttyp)
+    #  getting decision_type (Dokumenttyp)
     decisiontype_match = soup.find(string="Dokumenttyp:")
     if decisiontype_match:
         decision_type = decisiontype_match.next_element.get_text(strip=True)
@@ -124,17 +130,17 @@ for id, url in enumerate(mylist):
     else:
         decision_type = "NA"
 
-    # building the <text> tag
+    #  building the <text> tag
     text_tag = '<text type="%s" level="%s" title="%s" title_abbreviation="%s" drafting_date="%s" decade="%s"' \
                ' database_URL="%s" court="%s" court_detail="%s" reference="%s" year="%s" decision_type="%s"' \
                ' ECLI="%s">' \
                % (type, level, title, title_abbreviation, drafting_date, decade, database_URL, court,
                   court_detail, reference, year, decision_type, ECLI)
 
-    # scraping and adding the text body
+    #  scraping and adding the text body
     body = soup.get_text('\n', strip=True)
 
-    # checking whether scraper has correctly navigated to the right URL or webpage does not contain any decision
+    #  checking whether scraper has correctly navigated to the right URL or webpage does not contain any decision
     no_decision = "Das Bundesministerium der Justiz und für Verbraucherschutz und das Bundesamt für Justiz " \
                   "stellen für interessierte Bürgerinnen und Bürger ausgewählte Entscheidungen des" \
                   " Bundesverfassungsgerichts, der obersten Gerichtshöfe des Bundes sowie des" \
@@ -143,18 +149,19 @@ for id, url in enumerate(mylist):
         # discarding, exiting current loop and scraping next URL
         continue
 
-    # adding <text> tag, body and closing tag
+    #  adding <text> tag, body and closing tag
     corpus_as_list.append(text_tag)
     corpus_as_list.append(body)
     corpus_as_list.append("</text>")
 
-    # printing progress
+    #  printing progress
     print("\r", "%i out of %i scraped (%.2f%%)" % (id, len_list, (id/len_list*100)))
 
-with open(path_output, "w+", encoding="utf-8") as file:
+#  writing the corpus as a single txt file
+with open("corpus_R.txt", "w+", encoding="utf-8") as file:
     file.write("\n".join(corpus_as_list))
 
-print("Done.")
+print("\rDone.")
 
 
 
