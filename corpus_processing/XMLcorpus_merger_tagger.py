@@ -1,40 +1,47 @@
 '''
-A script for merging subcorpora and adding the <corpus> root tag.
+A script for merging the three subcorpora and adding the <corpus> root tag.
 '''
+import argparse
 
 
-#set paths for single subcorpora and final merged corpus
-subcorpus1 = r""
-subcorpus2 = r""
-subcorpus3 = r""
-merged_corpus_output = r""
+#  define cmd arguments
+parser = argparse.ArgumentParser(description="A script for merging the three subcorpora and adding a root element")
+parser.add_argument("corpus1", help="the subcorpus in .xml format to be merged")
+parser.add_argument("corpus2", help="the subcorpus in .xml format to be merged")
+parser.add_argument("corpus3", help="the subcorpus in .xml format to be merged")
+args = parser.parse_args()
+
+#  processing arguments
+inputCorpus1 = args.corpus1
+inputCorpus2 = args.corpus2
+inputCorpus3 = args.corpus3
+
 
 merged_corpus = ["<corpus>"]
 
-with open(subcorpus1, "r", encoding="utf-8") as file:
+with open(inputCorpus1, "r", encoding="utf-8") as file:
     lines = file.readlines()
 for line in lines:
     if line != "\n":
         merged_corpus.append(line)
 
-with open(subcorpus2, "r", encoding="utf-8") as file:
+with open(inputCorpus2, "r", encoding="utf-8") as file:
     lines = file.readlines()
 for line in lines:
     if line != "\n":
         merged_corpus.append(line)
 
-with open(subcorpus3, "r", encoding="utf-8") as file:
+with open(inputCorpus3, "r", encoding="utf-8") as file:
     lines = file.readlines()
 for line in lines:
     if line != "\n" or line != "\r\n":
         merged_corpus.append(line)
 
 merged_corpus.append("</corpus>")
-
-merged_corpus_str = "\n".join(merged_corpus)
 print("Subcopora merged. Now writing...")
 
-with open(merged_corpus_output, "w", encoding="utf-8") as file:
-    file.write(merged_corpus_str)
+
+with open("corpus_merged.xml", "w", encoding="utf-8") as file:
+    file.write("\n".join(merged_corpus))
 
 print("Done.")

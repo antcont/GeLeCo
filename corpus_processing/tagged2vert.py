@@ -25,46 +25,56 @@ anerkannt	VERB	anerkennen
 </text>
 </corpus>
 '''
+import argparse
 import re
 import gc
 from yaspin import yaspin
 from xml.sax.saxutils import unescape
-
+from pathlib import Path
 
 gc.set_threshold(1000, 15, 15)      # setting higher thresholds for garbage collection, in order to avoid memory peaks
 
-#set input and output filepaths
-fileXML = r""
-path_output = r""
 
-regex_list = [                              #create a list of regex to clean up the text and split tags
+#  define cmd arguments
+parser = argparse.ArgumentParser(description="A script for corpus verticalization "
+                                             "(building the corpus in word-per-line format)")
+parser.add_argument("corpus", help="the corpus in .xml format to be verticalized")
+args = parser.parse_args()
+
+#  processing arguments
+inputCorpus = args.corpus
+
+
+regex_list = [                              # create a list of regex to clean up the text and split tags
     (r'(>)(<)', r'\1\r\n\2'),
     (r'(</s>)', r'\r\n\1'),
     (r'(<s>)', r'\1\r\n'),
-    (r'.+\tSPACE\t.+$', r''),               #remove lines with tagged spaces
+    (r'.+\tSPACE\t.+$', r''),               # remove lines with tagged spaces
     (r'(\r\n|\r\r\n)', r'\n')
 ]
 
-with open(fileXML, 'r+', encoding='utf-8') as file:
+with open(inputCorpus, 'r+', encoding='utf-8') as file:
     corpus = file.readlines()
     print("Managed to read corpus.")
 
-    with open(path_output, "w+", encoding="utf-8") as corpus_vert:
-        with yaspin().bold.cyan.aesthetic as sp:                # printing spinner and % progress
-            lines_counter = 0
-            for line in corpus:
-                for to_find, to_replace in regex_list:
-                    line = re.sub(to_find, to_replace, line)    # apply all regexes to the string
-                if not line.startswith("<"):   #unescaping
-                    line = unescape(line)
-                    line = line.replace("&quot;", "\"")
-                if line != "\n" and line != "\r\n":            # ignore empty lines
-                    corpus_vert.write(line)
-                    lines_counter += 1
-                    if (lines_counter/10000).is_integer():       # refresh counter each 10000 tokens
-                        sp.text = "%i lines written" % lines_counter
+    filename_old = Path(inputCorpus).stem
+    filename_new = filename_old + "_vert.vert"
 
-print("Done")
+    with open(filename_new, "w+", encoding="utf-8") as corpus_vert:
+        lines_counter = 0
+        for line in corpus:
+            for to_find, to_replace in regex_list:
+                line = re.sub(to_find, to_replace, line)    # apply all regexes to the string
+            if not line.startswith("<"):                    # unescaping
+                line = unescape(line)
+                line = line.replace("&quot;", "\"")
+            if line != "\n" and line != "\r\n":            # ignore empty lines
+                corpus_vert.write(line)
+                lines_counter += 1
+                if (lines_counter/10000).is_integer():       # refresh counter each 10000 tokens
+                    print("\r", "%i lines written" % lines_counter, end="")
+
+print("\rDone")
 
 
 
