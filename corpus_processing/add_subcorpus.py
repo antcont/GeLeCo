@@ -9,7 +9,6 @@ import gc
 from pathlib import Path
 
 gc.set_threshold(1000, 15, 15)      # setting higher thresholds for garbage collection, in order to avoid memory peaks
-"
 
 #  define cmd arguments
 parser = argparse.ArgumentParser(description="A script for adding a subcorpus to the master corpus")

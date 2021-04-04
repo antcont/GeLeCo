@@ -30,7 +30,7 @@ def click_next():
 
 lista_URLs = []
 '''here put the link from where the scraping was interrupted'''
-driver.get("") #first time set to starting_page_1900to2020, then insert URL of new date-based search (after scraping the initial 15.000 URLs)
+driver.get(starting_page_1900to2020) #first time set to starting_page_1900to2020, then insert URL of new date-based search (after scraping the initial 15.000 URLs)
 for i in range(700): #database only shows 15.000 results for each query, divided into 700 pages
     click_next()
     elements = driver.find_elements_by_css_selector("[title*='Treffer Langtext']")

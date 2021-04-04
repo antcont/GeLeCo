@@ -22,13 +22,13 @@ merged_corpus = ["<corpus>"]
 with open(inputCorpus1, "r", encoding="utf-8") as file:
     lines = file.readlines()
 for line in lines:
-    if line != "\n":
+    if line != "\n" or line != "\r\n":
         merged_corpus.append(line)
 
 with open(inputCorpus2, "r", encoding="utf-8") as file:
     lines = file.readlines()
 for line in lines:
-    if line != "\n":
+    if line != "\n" or line != "\r\n":
         merged_corpus.append(line)
 
 with open(inputCorpus3, "r", encoding="utf-8") as file:
@@ -38,8 +38,8 @@ for line in lines:
         merged_corpus.append(line)
 
 merged_corpus.append("</corpus>")
-print("Subcopora merged. Now writing...")
 
+print("Subcopora merged. Now writing...")
 
 with open("corpus_merged.xml", "w", encoding="utf-8") as file:
     file.write("\n".join(merged_corpus))
