@@ -11,10 +11,10 @@ GeLeCo is a large German Legal Corpus for research, teaching and translation pur
 
 | text type |	database URL | text count	| token count |
 | :--------- | :--------- | :---------: | :---------: |
-|laws |	gesetze-im-internet.de |	6,577	| 22,502,937 |
-|court decisions |	rechtsprechung-im-internet.de |	55,361	| 167,210,730 |
-|administrative regulations |	verwaltungsvorschriften-im-internet.de |	787	| 3,469,166 |
-|**total count** |  |	**62,725** |	**193,182,833** |
+|laws |	gesetze-im-internet.de |	6,567	| 23,030,293 |
+|court decisions |	rechtsprechung-im-internet.de |	55,361	| 169,569,142 |
+|administrative regulations |	verwaltungsvorschriften-im-internet.de |	767	| 3,508,284 |
+|**total count** |  |	**62,695** |	**196,107,719** |
 
 The largest subcorpus (the corpus of court decisions published on `www.rechtsprechung-im-internet.de`) has the following composition: 
 | issuing court | text count | % |
@@ -31,7 +31,7 @@ The largest subcorpus (the corpus of court decisions published on `www.rechtspre
 
 
 #### 2.2.	Annotation scheme
-The corpus was compiled in vertical or word-per-line (WPL) format as required by SketchEngine and NoSketchEngine and marked-up with contextual (metadata), structural (text and sentence boundaries) and linguistic (POS tagging, lemmatisation) annotation (s. below). The complete POS tagset is available on [spacy.io](https://spacy.io/api/annotation#pos-de). 
+The corpus was compiled in vertical or word-per-line (WPL) format as required by SketchEngine and NoSketchEngine and marked-up with contextual (metadata), structural (text and sentence boundaries) and linguistic (POS tagging, lemmatisation) annotation (s. below). Tokenization, POS tagging and lemmatization were carried out using the TreeTagger ([tagset])(https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/STTS-Tagset.pdf). 
 
 ```
 <corpus>
@@ -89,4 +89,4 @@ Boilerplate text was eliminated by means of regular expressions. Texts extracted
 After scraping and cleaning, the subcorpora were sentence splitted. In particular, only lines containing two or more period characters underwent sentence splitting. For this task, [Kahn’s and Schroeder’s sentence-splitter](https://github.com/mediacloud/sentence-splitter) was used, and a list of non-breaking prefixes with legal abbreviations taken from the corpus and from online sources was supplied in order to improve sentence splitting accuracy. After splitting, lines were added opening and closing sentence delimiting tags (`<s>`).
 
 #### 3.5.	POS tagging and lemmatization
-The corpus was tagged with Part-of-Speech tags and lemmas using the SpaCy tagger.  The output did not undergo any systematic revision or correction stage; therefore, the corpus may contain minor sentence splitting or metadata errors.
+The corpus was tagged with Part-of-Speech tags and lemmas using the TreeTagger.  The output did not undergo any systematic revision or correction stage; therefore, the corpus may contain minor sentence splitting or metadata errors.
