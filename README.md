@@ -31,25 +31,33 @@ The largest subcorpus (the corpus of court decisions published on `www.rechtspre
 
 
 #### 2.2.	Annotation scheme
-The corpus was compiled in vertical or word-per-line (WPL) format as required by SketchEngine and NoSketchEngine and marked-up with contextual (metadata), structural (text and sentence boundaries) and linguistic (POS tagging, lemmatisation) annotation (s. below). Tokenization, POS tagging and lemmatization were carried out using the TreeTagger ([tagset])(https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/STTS-Tagset.pdf). 
+The corpus was compiled in vertical or word-per-line (WPL) format as required by SketchEngine and NoSketchEngine and marked-up with contextual (metadata), structural (text and sentence boundaries) and linguistic (POS tagging, lemmatisation) annotation (s. below). Tokenization, POS tagging and lemmatization were carried out using the TreeTagger ([tagset](https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/STTS-Tagset.pdf)). 
 
 ```
 <corpus>
 <text type="Gerichtsentscheidung" level="Bund" title="GmbH: Beschränkung der Stimmrechtsausübungsfreiheit eines Gesellschafters aufgrund der Treuepflicht" title_abbreviation="NA" drafting_date="12.04.2016" decade="2010" database_URL="rechtsprechung-im-internet.de" court="BGH" court_detail="BGH 2. Zivilsenat" reference="II ZR 275/14" year="2016" decision_type="Urteil" ECLI="ECLI:DE:BGH:2016:120416UIIZR275.14.0">
 <s>
-Nach	ADP	Nach
-dem	DET	der
-1.	ADJ	1.
-April	NOUN	April
-1941	NUM	1941
-werden	AUX	werden
-Gewinnausschüttungen	NOUN	Gewinnausschüttungen
-von	ADP	von
-Versorgungsunternehmen	NOUN	Versorgungsunternehmen
-an	ADP	an
-Gemeinden	NOUN	Gemeinde
-anerkannt	VERB	anerkennen
-.	PUNCT	.
+Die	ART	die
+Berufung	NN	Berufung
+der	ART	die
+Klägerin	NN	Klägerin
+gegen	APPR	gegen
+das	ART	die
+Urteil	NN	Urteil
+der	ART	die
+Kammer	NN	Kammer
+für	APPR	für
+Handelssachen	NN	Handelssache
+des	ART	die
+Landgerichts	NN	Landgericht
+Ingolstadt	NE	Ingolstadt
+vom	APPRART	von+die
+15.	ADJA	@ord@
+Oktober	NN	Oktober
+2013	CARD	@card@
+wird	VAFIN	werden
+zurückgewiesen	VVPP	zurückweisen
+.	$.	.
 </s>
 </text>
 </corpus>
