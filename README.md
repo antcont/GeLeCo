@@ -100,6 +100,10 @@ After scraping and cleaning, the subcorpora were sentence splitted. In particula
 The corpus was tagged with Part-of-Speech tags and lemmas using the TreeTagger.  The output did not undergo any systematic revision or correction stage; therefore, the corpus may contain minor sentence splitting or metadata errors.
 
 ### 4.	How to build the corpus
+Install all the required dependencies:
+```
+pip install -r requirements.txt
+```
 To build each subcorpus, run the respective script in the `URLscraper` folder to collect the URLs, then scrape the texts and metadata using the respective script in the `TextMetadataScraper` folder.
 To process the raw subcorpora and build the final corpus in .vert format, run the scripts in the `corpus_processing` folder in the following order:
 - `XMLcorpus_merger_tagger.py`
@@ -107,3 +111,5 @@ To process the raw subcorpora and build the final corpus in .vert format, run th
 - `deduplicate.py`
 - `xml2tagged.py`
 - `tagged2vert.py`
+
+
