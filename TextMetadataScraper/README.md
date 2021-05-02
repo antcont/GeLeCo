@@ -4,5 +4,5 @@ Scrapers for texts and metadata from gesetze-im-internet.de (`TextMetadataScrape
 
 CLI argument is the respective .txt file containing the list of URLs.
 ```
->>> python TextMetadataScraper_G.py URL_list_G.txt
+python TextMetadataScraper_G.py URL_list_G.txt
 ```
