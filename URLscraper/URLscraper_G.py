@@ -12,7 +12,8 @@ retries = Retry(connect=5, read=2, redirect=5)
 http = urllib3.PoolManager(retries=retries)
 
 #  define cmd arguments
-parser = argparse.ArgumentParser(description="A web scraper to collect all URLs from gesetze-im-internet.de.")
+parser = argparse.ArgumentParser(description="A web scraper to collect all URLs from gesetze-im-internet.de."
+                                             "\nA .txt file containing the list is created in the same folder.")
 args = parser.parse_args()
 
 
@@ -66,11 +67,11 @@ for x in URL_laws:
     href = a.get('href')
     if href is None:
         continue
-    url_clean_html = url_part + "/" + href      #adding local href to build the final URL
+    url_clean_html = url_part + "/" + href      # adding local href to build the final URL
     URL_list.append(url_clean_html)
     counter += 1
 
-    print("\r", "%i out of 6550 URLs scraped (%.2f%%)" % (counter, (counter/6550*100)), end="")
+    print("\r", "%i URLs scraped" % counter, end="")
 
 
 #  writing URL list

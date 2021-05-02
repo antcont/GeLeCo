@@ -10,7 +10,8 @@ from urllib3.util import Retry
 
 #  define cmd arguments
 parser = argparse.ArgumentParser(description="A web scraper to collect all URLs from"
-                                             " verwaltungsvorschriften-im-internet.de.")
+                                             " verwaltungsvorschriften-im-internet.de."
+                                             "\nA .txt file containing the list is created in the same folder.")
 args = parser.parse_args()
 
 
