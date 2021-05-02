@@ -1,0 +1,5 @@
+lxml
+treetaggerwrapper
+urllib3
+Beautifulsoup
+selenium

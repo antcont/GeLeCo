@@ -41,23 +41,30 @@ def click_next():
     clicking on "weiter" (next page) button
     '''
     driver.find_element_by_xpath('//*[@title="weiter"]').click()
-    time.sleep(0.5)
+    time.sleep(2)
 
 
-lista_URLs = []
+list_URLs = []
+counter = 0
 for url in startFrom:
     driver.get(url)  # first time set to starting_page_1900to2020, then insert URL of new date-based search (after scraping the initial 15.000 URLs)
     for i in range(700):  # database only shows 15.000 results for each query, divided into 700 pages
         click_next()
         elements = driver.find_elements_by_css_selector("[title*='Treffer Langtext']")
         for element in elements:
-            lista_URLs.append(element.get_attribute("href"))
+            list_URLs.append(element.get_attribute("href"))
+            counter += 1
+            if (counter/10).is_integer():
+                print("\r", counter, " URLs collected", end="")
 
+
+list_URLs = (list(set(list_URLs)))  # deduplicating
 
 with open("URL_list_R.txt", "w", encoding="utf-8") as file:
     file.write("\n".join(lista_URLs))
 
-print("Done")
+print("\r", counter, "URLs collected.")
+print("URL list created.")
 
 
 
