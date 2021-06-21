@@ -94,7 +94,7 @@ Based on the previously collected URL lists, single legal texts were scraped by 
 Boilerplate text was eliminated by means of regular expressions. Texts extracted from not correctly visualized webpages (not containing any law, regulation or court decision) were discarded. Texts also underwent a deduplication process based on metadata equivalence.
 
 #### 3.4.	Sentence splitting
-After scraping and cleaning, the subcorpora were sentence splitted. In particular, only lines containing two or more period characters underwent sentence splitting. For this task, [Kahn’s and Schroeder’s sentence-splitter](https://github.com/mediacloud/sentence-splitter) was used, and a list of non-breaking prefixes with legal abbreviations taken from the corpus and from online sources was supplied in order to improve sentence splitting accuracy. After splitting, lines were added opening and closing sentence delimiting tags (`<s>`).
+After scraping and cleaning, the subcorpora were sentence splitted. In particular, only lines containing two or more period characters underwent sentence splitting. For this task, a [sentence-splitter](https://github.com/mediacloud/sentence-splitter) based on Koehn and Schroeder's [Lingua::Sentence](https://metacpan.org/pod/Lingua::Sentence) was used, and a list of non-breaking prefixes with legal abbreviations taken from the corpus and from online sources was supplied in order to improve sentence splitting accuracy.
 
 #### 3.5.	POS tagging and lemmatization
 The corpus was tagged with Part-of-Speech tags and lemmas using the TreeTagger.  The output did not undergo any systematic revision or correction stage; therefore, the corpus may contain minor sentence splitting or metadata errors.
