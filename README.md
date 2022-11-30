@@ -112,4 +112,6 @@ To process the raw subcorpora and build the final corpus in .vert format, run th
 - `xml2tagged.py`
 - `tagged2vert.py`
 
+## Reference
+Contarino, A. G. (2021, July 13-17): GeLeCo: a large German Legal Corpus of laws, administrative regulations and court decisions [Poster presentation], 11th International Corpus Linguistics Conference 2021 (CL2021), University of Limerick, Limerick, Ireland
 
